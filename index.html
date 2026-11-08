@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>UI experiments</title>
+  <link rel="stylesheet" href="./theme.css">
+  <style>
+    main {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 48px 16px 64px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 500;
+    }
+
+    .intro {
+      margin: 6px 0 32px;
+      font-size: 14px;
+      color: var(--mute);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 28px 16px;
+    }
+
+    .label {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      margin-top: 12px;
+      font-size: 13px;
+    }
+
+    .label a {
+      font-size: 12px;
+      color: var(--mute);
+      text-decoration: none;
+    }
+
+    .label a:hover {
+      color: var(--ink);
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>UI experiments</h1>
+    <p class="intro">Cool UI experiments done out of boredom. Each one is a single JavaScript file with no dependencies.</p>
+    <div class="grid" id="grid"></div>
+  </main>
+
+  <script type="module">
+    const EXPERIMENTS = [
+      ['dino', 'Voxel dino'],
+      ['goo', 'Halftone goo'],
+      ['hold', 'Hold to publish'],
+      ['particles', 'Particle type'],
+      ['cloth', 'Cloth'],
+      ['mark', 'Mark maker'],
+      ['receipt', 'Receipt toast'],
+    ];
+
+    const grid = document.getElementById('grid');
+
+    // Start each experiment only once it scrolls near the screen.
+    const observer = new IntersectionObserver(entries => {
+      for (const { isIntersecting, target } of entries) {
+        if (!isIntersecting) continue;
+        observer.unobserve(target);
+        const name = target.dataset.name;
+        import(`./${name}/${name}.js`).then(module => module.default(target));
+      }
+    }, { rootMargin: '200px' });
+
+    for (const [name, title] of EXPERIMENTS) {
+      const item = document.createElement('div');
+      item.innerHTML = `
+        <div class="card" data-name="${name}"></div>
+        <div class="label"><span>${title}</span><a href="./${name}/">Open ↗</a></div>`;
+      grid.append(item);
+      observer.observe(item.querySelector('.card'));
+    }
+  </script>
+</body>
+</html>

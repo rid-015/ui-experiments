@@ -1,0 +1,51 @@
+/* Shared colours for every experiment. Change them here to re-theme everything. */
+:root {
+  --bg: #ffffff;
+  --ink: #1a1a1a;
+  --mute: #6f6f6c;
+  --card2: #f5f5f5;
+  --line2: #dcdcd8;
+  --acc: #2b7d52;
+  --acc-soft: #9fd8b8;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: inherit;
+}
+
+.card {
+  height: 328px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--card2);
+}
+
+/* Single-experiment pages */
+.solo {
+  min-height: 100vh;
+  display: grid;
+  place-content: center;
+  gap: 16px;
+  padding: 24px 16px;
+}
+
+.solo .card {
+  width: min(92vw, 720px);
+  height: min(70vh, 480px);
+}
+
+.solo nav {
+  font-size: 13px;
+  color: var(--mute);
+}
